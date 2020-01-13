@@ -1,16 +1,25 @@
 class MediaPlayer {
   media: HTMLMediaElement;
-  plugins: Array<any>
+  plugins: Array<any>;
+  container: HTMLElement;
 
   constructor(config: any) {
-    this.media = config.el
-    this.plugins = config.plugins || []
+    this.media = config.el;
+    this.plugins = config.plugins || [];
+    this.initPlayer();
+    this.initPlugins();
+  }
 
-    this.initPlugins()
+  initPlayer() {
+    this.container = document.createElement('div');
+    this.container.style.position = 'relative';
+
+    this.media.parentNode.insertBefore(this.container, this.media);
+    this.container.appendChild(this.media);
   }
 
   private initPlugins() {
-    this.plugins.forEach(plugin => plugin.run(this))
+    this.plugins.forEach(plugin => plugin.run(this));
   }
 
   play () { this.media.play() }
@@ -22,4 +31,4 @@ class MediaPlayer {
   toggleMute () { (!this.media.muted) ? this.mute() : this.unmute() }
 }
 
-export default MediaPlayer
+export default MediaPlayer;
